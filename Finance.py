@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-import matplotlib.pyplot as plt
+
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
@@ -36,3 +36,4 @@ else:
 st.write(f"{len(df)} lignes chargées.")
 if st.checkbox("Voir un aperçu des données"):
     st.dataframe(df.head())
+
