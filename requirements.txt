@@ -13,4 +13,4 @@ folium
 streamlit-folium
 requests
 plotly
-
+geopy
