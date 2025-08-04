@@ -113,22 +113,44 @@ st.plotly_chart(fig_pie, use_container_width=True)
 
 
 # 6. Montant dépensé par client
-st.subheader('Top clients par montant')
+
+
+# Calcul du montant total par client
 client_amount = (
-    df.groupby('CustomerID')['TotalPrice']
+    df.groupby(['CustomerID', 'Country'])['TotalPrice']
       .sum()
       .reset_index()
       .sort_values('TotalPrice', ascending=False)
 )
-top_cust = st.slider('Top N clients',5,20,10, key='cust2')
+
+# Transformation de l'ID client en chaîne (pour affichage complet)
+client_amount['CustomerID'] = client_amount['CustomerID'].astype(str)
+
+
+
+# Sélection du top N clients
+top_cust = st.slider('Top N clients', 5, 20, 10, key='cust2')
 top_amt = client_amount.head(top_cust)
+
+# Formatage du montant
+top_amt['Montant (€)'] = top_amt['TotalPrice'].apply(lambda x: f"{x:,.0f} €".replace(',', ' '))
+
+# Création du graphique
 fig_bar_amt = px.bar(
     top_amt, x='CustomerID', y='TotalPrice',
-    labels={'TotalPrice':'Montant (€)','CustomerID':'Client'},
+    labels={'TotalPrice': 'Montant (€)', 'CustomerID': 'Client'},
     title=f'Top {top_cust} clients',
-    hover_data=['TotalPrice']
+    hover_data={'TotalPrice': False, 'Montant (€)': True, 'Country': True}
 )
+
+# Affichage du graphique
 st.plotly_chart(fig_bar_amt, use_container_width=True)
+
+# Affichage du tableau
+st.dataframe(top_amt[['CustomerID', 'Montant (€)', 'Country']])
+
+
+
 
 # 7. Détails d'un client
 st.header('Détails d\'un ou plusieurs clients')
@@ -193,3 +215,4 @@ folium.GeoJson(
     )
 ).add_to(m)
 st_folium(m, width=700, height=450)
+
