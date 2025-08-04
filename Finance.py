@@ -216,3 +216,11 @@ folium.GeoJson(
 ).add_to(m)
 st_folium(m, width=700, height=450)
 
+# Signature
+st.markdown("""
+<div class="footer">
+    Réalisé par <strong>SOULEYMANE DAFFE - DATA SCIENTIST</strong>
+</div>
+""", unsafe_allow_html=True)
+
+
